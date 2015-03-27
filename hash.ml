@@ -5,5 +5,5 @@ let valid_case t x y w h=
       if t.(x+i).(y+j) then incr k;
     done
   done
-  k > 3
+  (!k >= 3)
       
