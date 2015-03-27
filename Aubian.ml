@@ -10,6 +10,11 @@ let parse entree =
 	done;
 	(m,n,o,p,mat);;
 
-let test (i,j) a b =
+(*
+let test (i,j) a b mat =
+	let nb_pizza 
 	let flag = ref true in
-	fo
+	for k=0 to a-1 do
+		for l=0 to b-1 do
+			flag
+*)
