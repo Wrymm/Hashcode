@@ -129,15 +129,37 @@ let delta = 10;;
 
 let h d = (d*delta) + delta /2
 
-let chemin_mid2 x0 y0 d = chemin x0 y0 (h d) 210 delta 0
-let chemin_australie x0 y0 d = chemin x0 y0 (h d) 260 (delta/2) 0
-let chemin_mid x0 y0 d = chemin x0 y0 (h d) 60 (delta*2) 0
-let chemin_amerique x0 y0 d = chemin x0 y0(h d) 100 (delta/2) 0
-let chemin_afrique x0 y0 d = chemin x0 y0 (h d) 167 (delta/2) 0
-let premier_chemin d = if d < 2 then chemin rs cs (h 0) 210 (delta*3) 0
+
+let chemin_mid2 t d = chemin t (h d) 210 delta 0
+let chemin_australie t d = chemin t (h d) 260 (delta/2) 0
+let chemin_mid t d = chemin t (h d) 60 (delta*2) 0
+let chemin_amerique t d = chemin t (h d) 100 (delta/2) 0
+let chemin_afrique t d = chemin t (h d) 167 (delta/2) 0
+let premier_chemin d = if d < 2 then chemin (1,(rs,cs,1)) (h 0) 210 (delta*3) 0
     else
-  if d = 5 then chemin rs cs (h 5) 210 (delta*2) 0
-  else chemin rs cs (h d) 210 (delta) 0
+  if d = 5 then chemin (1,(rs,cs,1)) (h 5) 210 (delta*2) 0
+  else chemin (1,(rs,cs,1)) (h d) 210 (delta) 0
+      
+exception Probleme of (int*int*int)
+
+let chemin d = 
+  let l = ref (premier_chemin d) in
+  let k = ref 1 in
+  while (List.length (!l)) < 401 do
+    let t = (List.hd (!l)) in
+    l := (
+      let c =
+    begin
+    match (!k) with 
+    |1 -> chemin_australie t d
+    |2 -> chemin_mid t d
+    |3 -> chemin_amerique t d
+    |4 -> chemin_afrique t d
+    |5 -> chemin_mid2 t d
+    end in if c =[] then raise (Probleme (d,(!k), List.length (!l))) else c)@(!l);
+    incr k;
+    if (!k) = 6 then k := 1;
+  done;
 
 
 (*let cibles = []
