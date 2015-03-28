@@ -102,11 +102,11 @@ let print_val r c  t sortie =
         done;;
 
 
-let () = 
-  Printf.printf "%d\n" (List.length parcours_largeur mat rs cs 19 100)
+let () =
+  Printf.printf "%d\n" (List.length (parcours_largeur mat rs cs 19 100))
 
 
 (*let cibles = []
-let () = 
+let () =
   print_val r c (mat_case_valide_bal (Array.make 1 (0,0,0)) cibles) "theo.out";;*)
 
