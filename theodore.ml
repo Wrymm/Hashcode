@@ -126,7 +126,7 @@ let print_val r c  t sortie =
 
 let chemin x1 y1 x2 y2 dx dy = List.rev (parcours_largeur x1 y1 x2 y2 dx dy)
 
-let chemin_australie x = chemin 19 100 19 260 10 0
+let chemin_australie () = chemin 19 100 19 260 10 0
 
 (*let cibles = []
 let () =
