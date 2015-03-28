@@ -67,7 +67,7 @@ let voisins_tours x y z maximum =
 
 exception Trouve of ((int * (int*int*int)) list)
 
-let parcours_largeur mat x0 y0 x y =
+let parcours_largeur x0 y0 x y =
   let t = Array.make_matrix r c (Array.make a []) in
   for i = 0 to r-1 do
     for j = 0 to c - 1 do
@@ -103,7 +103,7 @@ let print_val r c  t sortie =
 
 
 let () =
-  Printf.printf "%d\n" (List.length (parcours_largeur mat rs cs 19 100))
+  Printf.printf "%d\n" (List.length (parcours_largeur rs cs 19 100))
 
 
 (*let cibles = []
