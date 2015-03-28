@@ -123,10 +123,16 @@ let print_val r c  t sortie =
         done;;
 
 
-
 let chemin x1 y1 x2 y2 dx dy = List.rev (parcours_largeur x1 y1 x2 y2 dx dy)
 
-let chemin_australie () = chemin rs cs 19 260 10 0
+let delta = 10;;
+
+let h d = (d*delta) + delta /2
+
+let chemin_australie x0 y0 d = chemin x0 y0 (h d) 260 (delta/3) 0
+let chemin_mid x0 y0 d = chemin x0 y0 (h d) 60 (delta) 0
+let chemin_amerique x0 yo d = chemin x0 y0(h d) 100 (delta/3) 0
+let chemin_afrique x0 yo d = chemin x0 y0 (h d) 167 (delta/3) 0
 
 (*let cibles = []
 let () =
