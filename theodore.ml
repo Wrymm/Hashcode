@@ -142,7 +142,7 @@ let premier_chemin d = if d < 2 then chemin (1,(rs,cs,1)) (h 0) 210 (delta*3) 0
       
 exception Probleme of (int*int*int)
 
-let chemin d = 
+let chemin_tot d = 
   let l = ref (premier_chemin d) in
   let k = ref 1 in
   while (List.length (!l)) < 401 do
