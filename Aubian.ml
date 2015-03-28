@@ -84,6 +84,7 @@ let voisins (x,y,z) =
     bouger ~-1;
   !li;;
 
+
 let apartir_de tab tours_restants =
 	let resultat = ref [] in
 		for i=1 to tours_restants do
@@ -94,6 +95,7 @@ let apartir_de tab tours_restants =
 					then resultat_tour := 0::!resultat_tour
 					else begin
 					     let vois = voisins (tab.(j)) in
+						Printf.printf "coucou %d %!\n" (List.length vois);
 					     let (suiv,emplacement,_) = (max_l mat_potent vois) in
 						tab.(j) <- emplacement;
 						resultat_tour := suiv :: !resultat_tour;
@@ -103,4 +105,4 @@ let apartir_de tab tours_restants =
 		done;
 	List.rev !resultat;;
 
-apartir_de (Array.make b (rs,cs,0)) 3;;
+apartir_de (Array.init b (fun i -> if i < 16 then rs,cs,0 else if i < 42 then 19,100,1 else 19,260,1)) 10;;
