@@ -126,7 +126,7 @@ let chemin p x2 y2 dx dy =
 List.rev (parcours_largeur p x2 y2 dx dy)
 
 
-let delta = 10;;
+let delta = 80;;
 
 let h d = (d*delta) + delta /2
 
