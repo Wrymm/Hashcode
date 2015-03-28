@@ -24,3 +24,18 @@ let voisins (x,y,z) =
   if z >= 2 then
     bouger ~-1;
   !li
+
+let iter_cercle f (x,y) =
+  for i = -7 to 7 do
+    for j = -7 to 7 do
+      if i*i +j*j <= 49 && (x+i) >= 0 && (x+i) < r then
+        f (x+i, (y+j+c) mod c)
+    done
+  done
+
+let mise_a_jour_nb_valide t (x,y as ballon) =
+  iter_cercle (
+    iter_cercle (fun (x'',y'') ->
+      t.(x'').(y'') <- t.(x'').(y'') - 1
+    )
+  ) ballon
