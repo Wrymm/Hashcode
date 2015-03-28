@@ -1,3 +1,4 @@
+
 let r = 100;;
 let c = 300;;
 let a = 8
@@ -32,7 +33,7 @@ let mat_case_valide l =
   t;;
 
 let mat_case_valide_bal bal cibles =
-  let z = mat_case_valide (List.map (fun (x,y,z) -> (x,y)) (Array.to_list bal))in
+  let z = mat_case_valide (List.filter (fun t -> t != (-1,-1)) (List.map (fun (x,y,z) -> (x,y)) (Array.to_list bal))) in
   let l = ref [] in
   let rec aux = function
     |[] -> []
@@ -43,4 +44,16 @@ let mat_case_valide_bal bal cibles =
   in
   mat_case_valide (aux cibles)
   
+let voisins_tours x y z maximum = 
+  let t = Array.make (maximum+1) [] in
+  t.(0) <- [(x,y,z)];
+  let rec aux = function
+    |[] -> []
+    |t::q -> (List.map (fun (_,t) -> t) (voisins t))@(aux q)
+  in
+  for i =1 to maximum do
+    t.(i) <- (aux t.(i-1))
+  done;
+  t
   
+      
