@@ -146,7 +146,7 @@ let chemin_tot d =
   let k = ref 1 in
   while (List.length (!l)) < 401 do
     let t = (List.hd (!l)) in
-    Printf.printf "%d\n%!" (List.length (!l));
+    Printf.printf "%d %d\n%!" (!k) (List.length (!l));
     l := (
       let c =
     begin
