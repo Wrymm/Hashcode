@@ -116,7 +116,7 @@ let print_val r c  t sortie =
 
 
 let chemin p x2 y2 dx dy = 
-  Printf.printf "%d %d %d %d\n" x2 y2 dx dy;
+  Printf.printf "%d %d %d %d\n%!" x2 y2 dx dy;
 List.rev (parcours_largeur p x2 y2 dx dy)
 
 
