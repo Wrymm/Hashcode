@@ -1,1 +1,24 @@
-"coucou";;
+let parse entree =
+	let ic = open_in entree in
+	let (r,c,a,l,v,b,t,rs,cs) = Scanf.fscanf ic "%d %d %d %d %d %d %d %d %d " (fun i j k l m n o p q -> (i,j,k,l,m,n,o,p,q)) in
+	let cibles = ref [] and mat = Array.init a (fun i -> Array.init r (fun j -> Array.init c (fun k -> (0,0)))) in
+	for i = 1 to l do
+		cibles := (Scanf.fscanf ic "%d %d " (fun x y -> (x,y)))::!cibles;
+	done;
+	for i=0 to a-1 do
+		for j=0 to r-1 do
+			for k=0 to r do
+				mat.(i).(j).(k) <- Scanf.fscanf ic "%d %d " (fun x y -> (x,y));
+			done;
+		done;
+	done;
+	(r,c,a,l,v,b,t,rs,cs,!cibles,mat);;
+
+
+(*
+Nous avons besoin de:
+	- Une fonction qui étant donné le tableau des emplacements des différents ballons, et la liste des cibles, renvoie la matrice des interets
+*)
+ 
+
+
