@@ -86,7 +86,7 @@ let voisins_tours x y z maximum =
 
 exception Trouve of ((int * (int*int*int)) list)
 
-let parcours_largeur x0 y0 x y dx dy =
+let parcours_largeur p x y dx dy =
   let t = Array.make_matrix r c (Array.make a []) in
   for i = 0 to r-1 do
     for j = 0 to c - 1 do
@@ -94,11 +94,9 @@ let parcours_largeur x0 y0 x y dx dy =
     done
   done;
   let f = Queue.create () in
-  let k = ref 0 in
-  Queue.add [(1,(x0,y0,1))] f;
+  Queue.add [p] f;
   try
-    while (!k) < 387420489 do
-      incr k;
+    while true do
       let l = Queue.pop f in
       let v = voisins (snd (List.hd(l))) in
       List.iter (fun ((del,(i,j,k))) ->
@@ -123,7 +121,8 @@ let print_val r c  t sortie =
         done;;
 
 
-let chemin x1 y1 x2 y2 dx dy = List.rev (parcours_largeur x1 y1 x2 y2 dx dy)
+let chemin p x2 y2 dx dy = List.rev (parcours_largeur p x2 y2 dx dy)
+
 
 let delta = 10;;
 
