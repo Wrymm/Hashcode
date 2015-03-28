@@ -14,6 +14,7 @@ let parse entree =
         done;
         (r,c,a,l,v,b,t,rs,cs,!cibles,mat);;
 
+let (r,c,a,l,v,b,t,rs,cs,cibles,mat) = parse "final_round.in";;
 
 let nb_valide l =
   let t = Array.make_matrix r c 0 in
@@ -36,7 +37,7 @@ let mat_case_valide l =
   let t = Array.make_matrix r c false in
   let rec aux = function
     |[] -> ()
-    |(x,y)::q -> 
+    |(x,y)::q ->
 	t.(x).(y) <- true;
 	aux q
   in
@@ -48,10 +49,10 @@ let voisins t = [];;
 let mat_case_valide_bal bal cibles =
   let z = nb_valide (List.filter (fun t -> t != (-1,-1)) (List.map (fun (x,y,z) -> (x,y)) (Array.to_list bal))) in
   nb_valide (List.filter (fun (x,y) -> z.(x).(y) = 0) cibles)
-  
 
 
-let voisins_tours x y z maximum = 
+
+let voisins_tours x y z maximum =
   let t = Array.make (maximum+1) [] in
   t.(0) <- [(x,y,z)];
   let rec aux = function
@@ -62,10 +63,10 @@ let voisins_tours x y z maximum =
     t.(i) <- (aux t.(i-1))
   done;
   t
-  
- 
+
+
 exception Trouve of ((int * (int*int*int)) list)
-    
+
 let parcours_largeur mat x0 y0 x y =
   let t = Array.make_matrix r c (Array.make a []) in
   for i = 0 to r-1 do
@@ -85,7 +86,7 @@ let parcours_largeur mat x0 y0 x y =
 	    Queue.push ((del,(i,j,k))::l) f;) v;
     done;[]
   with |Trouve t -> t
- 
+
 let print_val r c  t sortie =
         let out = open_out sortie in
         for i = 0 to r - 1 do
@@ -101,6 +102,6 @@ let print_val r c  t sortie =
         done;;
 
 
-let () = 
+let () =
   print_val r c (mat_case_valide_bal (Array.make 1 (0,0,0)) cibles) "theo.out";;
 
