@@ -100,7 +100,7 @@ let parcours_largeur x0 y0 x y =
       let l = Queue.pop f in
       let v = voisins (snd (List.hd(l))) in
       List.iter (fun ((del,(i,j,k))) ->
-	if (i,j) = (x,y) then raise (Trouve ((del,(i,j,k))::l))
+		if abs(x-i) + abs(y-j) < 10 then raise (Trouve ((del,(i,j,k))::l))
 	else
 	    Queue.push ((del,(i,j,k))::l) f;) v;
     done;[]
