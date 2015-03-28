@@ -94,13 +94,15 @@ let parcours_largeur x0 y0 x y dx dy =
     done
   done;
   let f = Queue.create () in
+  let k = ref 0 in
   Queue.add [(1,(x0,y0,1))] f;
   try
-    while (!k) < n do
+    while (!k) < 387420489 do
+      incr k;
       let l = Queue.pop f in
       let v = voisins (snd (List.hd(l))) in
       List.iter (fun ((del,(i,j,k))) ->
-	if abs(x-i) < dx && abs(y-j) < dy then raise (Trouve ((del,(i,j,k))::l))
+	if abs(x-i) <= dx && abs(y-j) <= dy then raise (Trouve ((del,(i,j,k))::l))
 	else
 	    Queue.push ((del,(i,j,k))::l) f;) v;
     done;[]
@@ -121,12 +123,10 @@ let print_val r c  t sortie =
         done;;
 
 
-let () =
-  Printf.printf "%d\n" (List.length (parcours_largeur 19 100 19 260))
 
+let chemin x1 y1 x2 y2 dx dy = List.rev (parcours_largeur x1 y1 x2 y2 dx dy)
 
-let chemin_australie= List.rev (parcours_largeur rs cd 19 260)
-
+let chemin_australie x = chemin 19 100 19 260 10 0
 
 (*let cibles = []
 let () =
