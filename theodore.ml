@@ -96,7 +96,7 @@ let parcours_largeur x0 y0 x y dx dy =
   let f = Queue.create () in
   Queue.add [(1,(x0,y0,1))] f;
   try
-    while (!k) < n do
+    while true do
       let l = Queue.pop f in
       let v = voisins (snd (List.hd(l))) in
       List.iter (fun ((del,(i,j,k))) ->
