@@ -122,7 +122,7 @@ List.rev (parcours_largeur p x2 y2 dx dy)
 
 let delta = 80;;
 
-let h d = (d*delta) + delta /2
+let h d = d * 20 + 10
 
 
 let chemin_mid2 t d = chemin t (h d) 210 delta delta
