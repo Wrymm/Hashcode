@@ -124,14 +124,14 @@ let print_val r c  t sortie =
 let chemin p x2 y2 dx dy = List.rev (parcours_largeur p x2 y2 dx dy)
 
 
-let delta = 10000;;
+let delta = 1000;;
 
 let h d = (d*delta) + delta /2
 
 
 let chemin_mid2 t d = chemin t (h d) 210 delta 0
 let chemin_australie t d = chemin t (h d) 260 (delta/2) 0
-let chemin_mid t d = chemin t (h d) 10 80 0
+let chemin_mid t d = chemin t (h d) 10 (delta) 0
 let chemin_amerique t d = chemin t (h d) 100 (delta) 0
 let chemin_afrique t d = chemin t (h d) 167 (delta) 0
 let premier_chemin d = if d < 2 then chemin (1,(rs,cs,1)) (h 0) 210 (delta*3) 0
