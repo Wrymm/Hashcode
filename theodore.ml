@@ -46,8 +46,8 @@ let mat_case_valide l =
 let voisins t = [];;
 
 let mat_case_valide_bal bal cibles =
-  let z = mat_case_valide (List.filter (fun t -> t != (-1,-1)) (List.map (fun (x,y,z) -> (x,y)) (Array.to_list bal))) in
-  nb_valide (List.filter (fun (x,y) -> not z.(x).(y)) cibles)
+  let z = nb_valide (List.filter (fun t -> t != (-1,-1)) (List.map (fun (x,y,z) -> (x,y)) (Array.to_list bal))) in
+  nb_valide (List.filter (fun (x,y) -> z.(x).(y) = 0) cibles)
   
 
 
