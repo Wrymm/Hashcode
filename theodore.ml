@@ -1,8 +1,20 @@
+let parse entree =
+        let ic = open_in entree in
+        let (r,c,a,l,v,b,t,rs,cs) = Scanf.fscanf ic "%d %d %d %d %d %d %d %d %d " (fun i j k l m n o p q -> (i,j,k,l,m,n,o,p,q)) in
+        let cibles = ref [] and mat = Array.init r (fun i -> Array.init c (fun j -> Array.init (a+1) (fun k -> (0,0)))) in
+        for i = 1 to l do
+                cibles := (Scanf.fscanf ic "%d %d " (fun x y -> (x,y)))::!cibles;
+        done;
+        for z=1 to a do
+                for x=0 to r-1 do
+                        for y=0 to c-1 do
+                                mat.(x).(y).(z) <- Scanf.fscanf ic "%d %d " (fun x_a y_a -> (x_a,y_a));
+                        done;
+                done;
+        done;
+        (r,c,a,l,v,b,t,rs,cs,!cibles,mat);;
 
-let r = 100;;
-let c = 300;;
-let a = 8
-
+let (r,c,a,l,v,b,t,rs,cs,cibles,mat) = parse "final_round.in";;
 
 let nb_valide l =
   let t = Array.make_matrix r c 0 in
@@ -43,6 +55,8 @@ let mat_case_valide_bal bal cibles =
 	aux q
   in
   mat_case_valide (aux cibles)
+
+let voisins t = []
   
 let voisins_tours x y z maximum = 
   let t = Array.make (maximum+1) [] in
@@ -100,7 +114,9 @@ let print_val r c  t sortie =
         let out = open_out sortie in
         for i = 0 to r - 1 do
                 for j = 0 to c - 1 do
-		  if t.(i).(j) < 10 then
+		  if t.(i).(j) = 0 then
+			Printf.fprintf out "_"
+		  else if t.(i).(j) < 10 then
                     Printf.fprintf out "%d" t.(i).(j)
 		  else
 		    Printf.fprintf out "X";
@@ -109,4 +125,4 @@ let print_val r c  t sortie =
         done;;
 
 let () = 
-  print_val r c (nb_valide cibles) sortie;;
+  print_val r c (nb_valide cibles) "theo.out";;
