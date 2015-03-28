@@ -94,7 +94,7 @@ let parcours_largeur p x y dx dy =
       let l = Queue.pop f in
       let v = voisins (snd (List.hd(l))) in
       List.iter (fun ((del,(i,j,k))) ->
-	if abs(x-i) <= dx && abs(y-j) <= dy then raise (Trouve ((del,(i,j,k))::l))
+	if abs(x-i) <= dx && abs((c+y-j) mod c) <= dy then raise (Trouve ((del,(i,j,k))::l))
 	else
 	    Queue.push ((del,(i,j,k))::l) f;) v;
     done;[]
