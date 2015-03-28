@@ -11,8 +11,8 @@ let nb_valide l =
     |(x,y)::q ->
 	for i = -7 to 7 do
 	  for j = -7 to 7 do
-	    if i*i +j*j <= 49 && (y+j) >= 0 && (y+j) < c then
-	      t.(((x+i)+c) mod c).(y+j) <- t.(((x+i)+c) mod c).(y+j) + 1;
+	    if i*i +j*j <= 49 && (x+i) >= 0 && (x+i) < r then
+	      t.(x+i).((y+j+c) mod c) <- t.(x+i).((y+j+c) mod c) + 1;
 	  done
 	done;
 	aux q
