@@ -122,7 +122,7 @@ let print_val r c  t sortie =
 
 
 let () =
-  Printf.printf "%d\n" (List.length (parcours_largeur rs cs 19 100))
+  Printf.printf "%d\n" (List.length (parcours_largeur 19 100 19 260))
 
 
 (*let cibles = []
