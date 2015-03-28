@@ -98,7 +98,7 @@ let parcours_largeur x0 y0 x y =
   try
     while true do
       let l = Queue.pop f in
-      let v = voisins (List.hd(l)) in
+      let v = voisins (snd (List.hd(l))) in
       List.iter (fun ((del,(i,j,k))) ->
 	if (i,j) = (x,y) then raise (Trouve ((del,(i,j,k))::l))
 	else
