@@ -125,6 +125,9 @@ let () =
   Printf.printf "%d\n" (List.length (parcours_largeur 19 100 19 260))
 
 
+let chemin _australie= List.rev (parcours_largeur rs cd 19 260)
+
+
 (*let cibles = []
 let () =
   print_val r c (mat_case_valide_bal (Array.make 1 (0,0,0)) cibles) "theo.out";;*)
