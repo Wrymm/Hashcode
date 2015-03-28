@@ -5,16 +5,16 @@ let parse entree =
 	for i = 1 to l do
 		cibles := (Scanf.fscanf ic "%d %d " (fun x y -> (x,y)))::!cibles;
 	done;
-	for i=0 to r-1 do
-		for j=0 to c-1 do
-			for k=0 to a do
-				mat.(i).(j).(k) <- Scanf.fscanf ic "%d %d " (fun x y -> (x,y));
+	for z=1 to a do
+		for x=0 to r-1 do
+			for y=0 to c-1 do
+				mat.(x).(y).(z) <- Scanf.fscanf ic "%d %d " (fun x_a y_a -> (x_a,y_a));
 			done;
 		done;
 	done;
 	(r,c,a,l,v,b,t,rs,cs,!cibles,mat);;
 
-let (r,c,a,l,v,b,t,rs,cs,cibles,mat) = parse "/home/guilaub/Documents/GitHub/mini_test.in";;
+let (r,c,a,l,v,b,t,rs,cs,cibles,mat) = parse "/home/guilaub/Documents/GitHub/final_round.in";;
 (*
 Nous avons besoin de:
 	- Une fonction "mat_case_valide_val tab" qui étant donné le tableau des emplacements des différents ballons, et la liste des cibles, renvoie la matrice des interet
@@ -28,14 +28,39 @@ let rec max_l mat_potent = function
 					then (changement,(a,b,c),potent)
 					else (changement_reste,empl_reste,max_reste);;
 
-let mat_case_valide =
+
+let nb_valide l =
+	let t = Array.make_matrix r c 0 in
+	let rec aux = function
+		|[] -> ()
+		|(x,y)::q ->
+for i = -7 to 7 do
+for j = -7 to 7 do
+if i*i +j*j <= 49 && (y+j) >= 0 && (y+j) < c then
+t.(((x+i)+c) mod c).(y+j) <- t.(((x+i)+c) mod c).(y+j) + 1;
+done
+done;
+aux q
+in
+aux l;
+t;;
+
+let mat_case_valide l =
 	let t = Array.make_matrix r c false in
 	let rec aux = function
 		|[] -> ()
-		|(x,y)::q -> t.(x).(y) <- true; aux q
+		|(x,y)::q -> t.(x).(y) <- true;aux q
 	in
-aux cibles;
-t;;
+		aux l;t;;
+
+let mat_case_valide_bal bal =
+	let z = mat_case_valide (List.filter (fun t -> t != (-1,-1)) (List.map (fun (x,y,z) -> (x,y)) (Array.to_list bal))) in
+	let l = ref [] in
+	let rec aux = function
+		|[] -> []
+		|(x,y)::q -> if (not z.(x).(y)) then
+				l := (x,y)::(!l);aux q
+in nb_valide (aux cibles);;
 
 
 let voisins (x,y,z) =
@@ -64,15 +89,11 @@ let apartir_de tab tours_restants =
 		for i=1 to tours_restants do
 			let resultat_tour = ref [] in
 			for j=b-1 downto 0 do
-				Printf.printf "42 %!\n";
-				let mat_potent = mat_case_valide_val tab in
-				Printf.printf "43 %!\n";
+				let mat_potent = mat_case_valide_bal tab in
 				if tab.(j) = (-1,-1,-1)
 					then resultat_tour := 0::!resultat_tour
 					else begin
-					      Printf.printf "44 %!\n";
 					     let vois = voisins (tab.(j)) in
-					      Printf.printf "45 %!\n";
 					     let (suiv,emplacement,_) = (max_l mat_potent vois) in
 						tab.(j) <- emplacement;
 						resultat_tour := suiv :: !resultat_tour;
@@ -82,4 +103,4 @@ let apartir_de tab tours_restants =
 		done;
 	List.rev !resultat;;
 
-apartir_de (Array.make b (rs,cs,0)) t;;
+apartir_de (Array.make b (rs,cs,0)) 3;;
