@@ -156,6 +156,7 @@ let chemin_tot d =
     incr k;
     if (!k) = 6 then k := 1;
   done;
+ 	(!l)
 
 
 (*let cibles = []
