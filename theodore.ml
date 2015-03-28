@@ -13,9 +13,6 @@ let parse entree =
                 done;
         done;
         (r,c,a,l,v,b,t,rs,cs,!cibles,mat);;
-let r = 100;;
-let c = 300;;
-let a = 8
 
 
 let nb_valide l =
@@ -103,8 +100,6 @@ let print_val r c  t sortie =
                 Printf.fprintf out "\n"
         done;;
 
-
-let cibles = []
 
 let () = 
   print_val r c (mat_case_valide_bal (Array.make 1 (0,0,0)) cibles) "theo.out";;
