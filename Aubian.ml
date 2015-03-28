@@ -14,12 +14,7 @@ let parse entree =
 	done;
 	(r,c,a,l,v,b,t,rs,cs,!cibles,mat);;
 
-let (r,c,a,l,v,b,t,rs,cs,cibles,mat) = parse "/home/guilaub/Documents/GitHub/final_round.in";;
-(*
-Nous avons besoin de:
-	- Une fonction "mat_case_valide_val tab" qui étant donné le tableau des emplacements des différents ballons, et la liste des cibles, renvoie la matrice des interet
-
-*)
+let (r,c,a,l,v,b,t,rs,cs,cibles,mat) = parse "final_round.in";;
 
 let rec max_l mat_potent = function
 	| []   -> (0,(-1,-1,-1),min_int)
@@ -28,10 +23,7 @@ let rec max_l mat_potent = function
 					then (changement,(a,b,c),potent)
 					else (changement_reste,empl_reste,max_reste);;
 
-
-
 let nb_valide l =
-  try (
   let t = Array.make_matrix r c 0 in
   let rec aux = function
     |[] -> ()
@@ -45,34 +37,7 @@ let nb_valide l =
 	aux q
   in
   aux l;
-  t)
-   with Invalid_argument (_) -> failwith "nb_valide";;
-
-
-let mat_case_valide l =
-  try (
-	let t = Array.make_matrix r c false in
-  let rec aux = function
-    |[] -> ()
-    |(x,y)::q -> 
-	t.(x).(y) <- true;
-	aux q
-  in
-  aux l;
-  t )
-   with Invalid_argument (_) -> failwith "mat_case_valide";;
-
-let mat_case_valide_bal bal =
-  let z = mat_case_valide (List.filter (fun t -> t != (-1,-1)) (List.map (fun (x,y,z) -> (x,y)) (Array.to_list bal))) in
-  let l = ref [] in
-  let rec aux = function
-    |[] -> []
-    |(x,y)::q -> 
-	if (not z.(x).(y)) then
-	  l := (x,y)::(!l);
-	aux q
-  in
-  nb_valide (aux cibles);;
+  t;;
 
 let voisins (x,y,z) =
   let li = ref [] in
@@ -95,27 +60,127 @@ let voisins (x,y,z) =
     bouger ~-1;
   !li;;
 
-
 let shuffle = List.sort (fun i j -> if Random.int 2 = 0 then 1 else -1);;
 
+let iter_cercle f (x,y) =
+  for i = -7 to 7 do
+    for j = -7 to 7 do
+      if i*i +j*j <= 49 && (x+i) >= 0 && (x+i) < r then
+        f (x+i, (y+j+c) mod c)
+    done;
+  done;;
+
+let mise_a_jour_nb_valide t (x,y as ballon) =
+  iter_cercle (
+    iter_cercle (fun (x'',y'') ->
+      t.(x'').(y'') <- t.(x'').(y'') - 1
+    )
+  ) ballon;;
+
+
+
+
+exception Trouve of ((int * (int*int*int)) list)
+
+let parcours_largeur x0 y0 x y dx dy =
+  let t = Array.make_matrix r c (Array.make a []) in
+  for i = 0 to r-1 do
+    for j = 0 to c - 1 do
+      t.(i).(j) <- (Array.make a [])
+    done
+  done;
+  let f = Queue.create () in
+  let k = ref 0 in
+  Queue.add [(1,(x0,y0,1))] f;
+  try
+    while (!k) < 387420489 do
+      incr k;
+      let l = Queue.pop f in
+      let v = voisins (snd (List.hd(l))) in
+      List.iter (fun ((del,(i,j,k))) ->
+	if abs(x-i) <= dx && abs(y-j) <= dy then raise (Trouve ((del,(i,j,k))::l))
+	else
+	    Queue.push ((del,(i,j,k))::l) f;) v;
+    done;[]
+  with |Trouve t -> t
+
+let chemin x1 y1 x2 y2 dx dy = List.rev (parcours_largeur x1 y1 x2 y2 dx dy);;
+
+let chemin_australie = chemin rs cs 19 260 10 0;;
+
+(*
 let apartir_de tab tours_restants =
+	let debut_amerique = ref [] and debut_australie = ref chemin_australie in
 	let resultat = ref [] in
 		for i=1 to tours_restants do
-			let resultat_tour = ref [] in
+			let resultat_tour = ref [] and mat_potent = nb_valide cibles in
 			for j=b-1 downto 0 do
-				let mat_potent = mat_case_valide_bal tab in
-				if tab.(j) = (-1,-1,-1)
-					then resultat_tour := 0::!resultat_tour
-					else begin
-					     let vois = shuffle (voisins (tab.(j))) in
-					     let (suiv,emplacement,_) = (max_l mat_potent vois) in
-						tab.(j) <- emplacement;
-						resultat_tour := suiv :: !resultat_tour;
-					     end;
-				     
+				if j > 35 && (!debut_amerique != [])
+					then (let (dep,coord) = List.hd !debut_amerique in
+							tab.(j) <- coord;
+							resultat_tour := dep::!resultat_tour;)
+					else if j > 17 && (!debut_australie != [])
+						then (let (dep,coord) = List.hd !debut_australie in
+							tab.(j) <- coord;
+							resultat_tour := dep::!resultat_tour;)
+						else if tab.(j) = (-1,-1,-1)
+							then resultat_tour := 0::!resultat_tour
+							else begin
+							    let vois = shuffle (voisins (tab.(j))) in
+					     		    let (suiv,emplacement,_) = (max_l mat_potent vois) in
+								tab.(j) <- emplacement;
+								resultat_tour := suiv :: !resultat_tour;
+								let (emp1,emp2,_) = emplacement in mise_a_jour_nb_valide mat_potent (emp1,emp2);
+					    		     end;
+				if !debut_amerique != []
+					then debut_amerique := List.tl !debut_amerique;
+				if !debut_australie != []
+					then debut_australie := List.tl !debut_australie;
 			done;
 			resultat := !resultat_tour::!resultat;
+			Printf.printf "%d %! \n" i;
+		done;
+	List.rev !resultat;;
+*)
+
+let apartir_de tab tours_restants =
+	let debut_amerique = ref [] and debut_australie = ref chemin_australie in
+	let resultat = ref [] in
+		for i=1 to tours_restants do
+			let resultat_tour = ref [] and mat_potent = nb_valide cibles in
+			for j=b-1 downto 0 do
+				if j > 35 && (!debut_amerique != [])
+					then (let (dep,coord) = List.hd !debut_amerique in
+							tab.(j) <- coord;
+							resultat_tour := dep::!resultat_tour;)
+					else if j > 17 && (!debut_australie != [])
+						then (let (dep,coord) = List.hd !debut_australie in
+							tab.(j) <- coord;
+							resultat_tour := dep::!resultat_tour;)
+						else if tab.(j) = (-1,-1,-1)
+							then resultat_tour := 0::!resultat_tour
+							else begin
+							    let vois = shuffle (voisins (tab.(j))) in
+					     		    let (suiv,emplacement,_) = (max_l mat_potent vois) in
+								tab.(j) <- emplacement;
+								resultat_tour := suiv :: !resultat_tour;
+								let (emp1,emp2,_) = emplacement in mise_a_jour_nb_valide mat_potent (emp1,emp2);
+					    		     end;
+				if !debut_amerique != []
+					then debut_amerique := List.tl !debut_amerique;
+				if !debut_australie != []
+					then debut_australie := List.tl !debut_australie;
+			done;
+			resultat := !resultat_tour::!resultat;
+			Printf.printf "%d %! \n" i;
 		done;
 	List.rev !resultat;;
 
-apartir_de (Array.make b (rs,cs,0)) 400;;
+
+let resultat = apartir_de (Array.make b (rs,cs,0)) 400;;
+
+let parse_fin sortie =
+	let oc = open_out sortie in
+		List.iter (fun i -> Printf.fprintf oc "%d" (List.hd i);List.iter (fun j -> Printf.fprintf oc " %d" j) (List.tl i); Printf.fprintf oc "\n") resultat; flush oc;;
+
+parse_fin "final_resultat";;
