@@ -44,7 +44,26 @@ let mat_case_valide l =
   aux l;
   t;;
 
-let voisins t = [];;
+let voisins (x,y,z) =
+  let li = ref [] in
+  let bouger d =
+    let z' = z+d in
+    let (u,v) = mat.(x).(y).(z') in
+    let x' = x+u
+    and y' = (y+v+c) mod c in
+    if 0 <= x' && x' < r then
+      li := (d, (x',y',z')) :: !li
+  in
+  (* rester à la même altitude *)
+  if z >= 1 then
+    bouger 0;
+  (* monter *)
+  if z < a then
+    bouger 1;
+  (* descendre *)
+  if z >= 2 then
+    bouger ~-1;
+  !li
 
 let mat_case_valide_bal bal cibles =
   let z = nb_valide (List.filter (fun t -> t != (-1,-1)) (List.map (fun (x,y,z) -> (x,y)) (Array.to_list bal))) in
