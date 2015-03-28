@@ -6,20 +6,21 @@ let mat = Array.init r (fun x -> Array.make_matrix c a (1,1))
 
 let voisins (x,y,z) =
   let li = ref [] in
-  let bouger z' =
+  let bouger d =
+    let z' = z+d in
     let (u,v) = mat.(x).(y).(z') in
     let x' = x+u
     and y' = (y+v+c) mod c in
     if 0 <= x' && x' < r then
-      li := (x',y',z') :: !li
+      li := (d, (x',y',z')) :: !li
   in
   (* rester à la même altitude *)
   if z >= 1 then
-    bouger z;
+    bouger 0;
   (* monter *)
   if z < a then
-    bouger (z+1);
+    bouger 1;
   (* descendre *)
   if z >= 2 then
-    bouger (z-1);
+    bouger ~-1;
   !li
