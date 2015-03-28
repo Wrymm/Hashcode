@@ -14,11 +14,17 @@ let parse entree =
 	done;
 	(r,c,a,l,v,b,t,rs,cs,!cibles,mat);;
 
-
+(* let (r,c,a,l,v,b,t,rs,cs,cibles,mat) = parse "/home/guilaub/Documents/GitHub/final_round.in";; *)
 (*
 Nous avons besoin de:
-	- Une fonction qui étant donné le tableau des emplacements des différents ballons, et la liste des cibles, renvoie la matrice des interets
+	- Une fonction "mat_case_valide_val tab" qui étant donné le tableau des emplacements des différents ballons, et la liste des cibles, renvoie la matrice des interet
+
 *)
- 
-
-
+(*
+let apartir_de tab tours_restants =
+	let tab = Array.make b (rs,cs,0) and resultat = ref [] in
+		for i=1 to tours_restants do
+			let resultat_tour = ref [] in
+			for j=0 to b-1 do
+				let (x,y) = ref
+*)
