@@ -29,39 +29,50 @@ let rec max_l mat_potent = function
 					else (changement_reste,empl_reste,max_reste);;
 
 
+
 let nb_valide l =
-	let t = Array.make_matrix r c 0 in
-	let rec aux = function
-		|[] -> ()
-		|(x,y)::q ->
-for i = -7 to 7 do
-for j = -7 to 7 do
-if i*i +j*j <= 49 && (y+j) >= 0 && (y+j) < c then
-t.(((x+i)+c) mod c).(y+j) <- t.(((x+i)+c) mod c).(y+j) + 1;
-done
-done;
-aux q
-in
-aux l;
-t;;
+  try (
+  let t = Array.make_matrix r c 0 in
+  let rec aux = function
+    |[] -> ()
+    |(x,y)::q ->
+	for i = -7 to 7 do
+	  for j = -7 to 7 do
+	    if i*i +j*j <= 49 && (x+i) >= 0 && (x+i) < r then
+	      t.(x+i).((y+j+c) mod c) <- t.(x+i).((y+j+c) mod c) + 1;
+	  done
+	done;
+	aux q
+  in
+  aux l;
+  t)
+   with Invalid_argument (_) -> failwith "nb_valide";;
+
 
 let mat_case_valide l =
+  try (
 	let t = Array.make_matrix r c false in
-	let rec aux = function
-		|[] -> ()
-		|(x,y)::q -> t.(x).(y) <- true;aux q
-	in
-		aux l;t;;
+  let rec aux = function
+    |[] -> ()
+    |(x,y)::q -> 
+	t.(x).(y) <- true;
+	aux q
+  in
+  aux l;
+  t )
+   with Invalid_argument (_) -> failwith "mat_case_valide";;
 
 let mat_case_valide_bal bal =
-	let z = mat_case_valide (List.filter (fun t -> t != (-1,-1)) (List.map (fun (x,y,z) -> (x,y)) (Array.to_list bal))) in
-	let l = ref [] in
-	let rec aux = function
-		|[] -> []
-		|(x,y)::q -> if (not z.(x).(y)) then
-				l := (x,y)::(!l);aux q
-in nb_valide (aux cibles);;
-
+  let z = mat_case_valide (List.filter (fun t -> t != (-1,-1)) (List.map (fun (x,y,z) -> (x,y)) (Array.to_list bal))) in
+  let l = ref [] in
+  let rec aux = function
+    |[] -> []
+    |(x,y)::q -> 
+	if (not z.(x).(y)) then
+	  l := (x,y)::(!l);
+	aux q
+  in
+  nb_valide (aux cibles);;
 
 let voisins (x,y,z) =
   let li = ref [] in
@@ -85,6 +96,8 @@ let voisins (x,y,z) =
   !li;;
 
 
+let shuffle = List.sort (fun i j -> if Random.int 2 = 0 then 1 else -1);;
+
 let apartir_de tab tours_restants =
 	let resultat = ref [] in
 		for i=1 to tours_restants do
@@ -94,15 +107,15 @@ let apartir_de tab tours_restants =
 				if tab.(j) = (-1,-1,-1)
 					then resultat_tour := 0::!resultat_tour
 					else begin
-					     let vois = voisins (tab.(j)) in
-						Printf.printf "coucou %d %!\n" (List.length vois);
+					     let vois = shuffle (voisins (tab.(j))) in
 					     let (suiv,emplacement,_) = (max_l mat_potent vois) in
 						tab.(j) <- emplacement;
 						resultat_tour := suiv :: !resultat_tour;
 					     end;
+				     
 			done;
 			resultat := !resultat_tour::!resultat;
 		done;
 	List.rev !resultat;;
 
-apartir_de (Array.init b (fun i -> if i < 16 then rs,cs,0 else if i < 42 then 19,100,1 else 19,260,1)) 10;;
+apartir_de (Array.make b (rs,cs,0)) 400;;
