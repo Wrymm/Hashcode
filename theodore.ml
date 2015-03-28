@@ -94,9 +94,11 @@ let parcours_largeur x0 y0 x y dx dy =
     done
   done;
   let f = Queue.create () in
+  let k = ref 0 in
   Queue.add [(1,(x0,y0,1))] f;
   try
-    while true do
+    while (!k) < 387420489 do
+      incr k;
       let l = Queue.pop f in
       let v = voisins (snd (List.hd(l))) in
       List.iter (fun ((del,(i,j,k))) ->
@@ -125,7 +127,7 @@ let () =
   Printf.printf "%d\n" (List.length (parcours_largeur 19 100 19 260))
 
 
-let chemin_australie= List.rev (parcours_largeur rs cd 19 260)
+let chemin_australie= List.rev (parcours_largeur rs cs 19 260)
 
 
 (*let cibles = []
