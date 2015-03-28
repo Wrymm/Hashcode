@@ -125,7 +125,7 @@ let () =
   Printf.printf "%d\n" (List.length (parcours_largeur 19 100 19 260))
 
 
-let chemin _australie= List.rev (parcours_largeur rs cd 19 260)
+let chemin_australie= List.rev (parcours_largeur rs cd 19 260)
 
 
 (*let cibles = []
