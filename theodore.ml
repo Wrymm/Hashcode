@@ -37,7 +37,7 @@ let mat_case_valide l =
   let t = Array.make_matrix r c false in
   let rec aux = function
     |[] -> ()
-    |(x,y)::q -> 
+    |(x,y)::q ->
 	t.(x).(y) <- true;
 	aux q
   in
@@ -49,20 +49,14 @@ let mat_case_valide_bal bal cibles =
   let l = ref [] in
   let rec aux = function
     |[] -> []
-    |(x,y)::q -> 
+    |(x,y)::q ->
 	if (not z.(x).(y)) then
 	  l := (x,y)::(!l);
 	aux q
   in
-<<<<<<< HEAD
-  mat_case_valide (aux cibles)
-
-let voisins t = []
-=======
   nb_valide (aux cibles)
->>>>>>> abfb1ea4838b6999d2952a59f38c0e4290b20b07
-  
-let voisins_tours x y z maximum = 
+
+let voisins_tours x y z maximum =
   let t = Array.make (maximum+1) [] in
   t.(0) <- [(x,y,z)];
   let rec aux = function
@@ -73,10 +67,10 @@ let voisins_tours x y z maximum =
     t.(i) <- (aux t.(i-1))
   done;
   t
-  
- 
+
+
 exception Trouve of ((int * (int*int*int)) list)
-    
+
 let parcours_largeur mat x0 y0 x y =
   let t = Array.make_matrix r c (Array.make a []) in
   for i = 0 to r-1 do
@@ -96,7 +90,7 @@ let parcours_largeur mat x0 y0 x y =
 	    Queue.push ((del,(i,j,k))::l) f;) v;
     done;[]
   with |Trouve t -> t
- 
+
 
 let nb_valide l =
   let t = Array.make_matrix r c 0 in
@@ -128,5 +122,5 @@ let print_val r c  t sortie =
                 Printf.fprintf out "\n"
         done;;
 
-let () = 
+let () =
   print_val r c (nb_valide cibles) "theo.out";;
