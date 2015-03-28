@@ -129,7 +129,11 @@ let delta = 10;;
 
 let h d = (d*delta) + delta /2
 
-let chemin_mid2 x0 y0 d = chemin x0 y0 (h d) 260 delta*2 0
+let premier_chemin d = if d < 2 then delta_mid2 rs cs (h 1) (delta) 0
+    else
+  if d = 5 then delta_mid2 rs cs (h 4) (delta) 0
+  else chemin_mid2 rs cs (h d) (delta) 0
+let chemin_mid2 x0 y0 d = chemin x0 y0 (h d) 210 delta 0
 let chemin_australie x0 y0 d = chemin x0 y0 (h d) 260 (delta/2) 0
 let chemin_mid x0 y0 d = chemin x0 y0 (h d) 60 (delta*2) 0
 let chemin_amerique x0 y0 d = chemin x0 y0(h d) 100 (delta/2) 0
