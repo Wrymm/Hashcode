@@ -10,7 +10,7 @@ let nb_valide l =
     |(x,y)::q ->
 	for i = -7 to 7 do
 	  for j = -7 to 7 do
-	    if i*i +j*j <= 49 then
+	    if i*i +j*j <= 49 && (y+j) >= 0 && (y+j) < c then
 	      t.(((x+i)+c) mod c).(y+j) <- t.(((x+i)+c) mod c).(y+j) + 1;
 	  done
 	done;
@@ -42,4 +42,5 @@ let mat_case_valide_bal bal cibles =
 	aux q
   in
   mat_case_valide (aux cibles)
+  
   
