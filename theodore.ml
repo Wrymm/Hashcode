@@ -42,7 +42,7 @@ let mat_case_valide_bal bal cibles =
 	  l := (x,y)::(!l);
 	aux q
   in
-  mat_case_valide (aux cibles)
+  nb_valide (aux cibles)
   
 let voisins_tours x y z maximum = 
   let t = Array.make (maximum+1) [] in
