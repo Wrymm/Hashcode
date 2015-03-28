@@ -79,3 +79,34 @@ let parcours_largeur mat x0 y0 x y =
     done;[]
   with |Trouve t -> t
  
+
+let nb_valide l =
+  let t = Array.make_matrix r c 0 in
+  let rec aux = function
+    |[] -> ()
+    |(x,y)::q ->
+	for i = -7 to 7 do
+	  for j = -7 to 7 do
+	    if i*i +j*j <= 49 && (x+i) >= 0 && (x+i) < r then
+	      t.(x+i).((y+j+c) mod c) <- t.(x+i).((y+j+c) mod c) + 1;
+	  done
+	done;
+	aux q
+  in
+  aux l;
+  t;;
+
+let print_val r c  t sortie =
+        let out = open_out sortie in
+        for i = 0 to r - 1 do
+                for j = 0 to c - 1 do
+		  if t.(i).(j) < 10 then
+                    Printf.fprintf out "%d" t.(i).(j)
+		  else
+		    Printf.fprintf out "X";
+                done;
+                Printf.fprintf out "\n"
+        done;;
+
+let () = 
+  print_val r c (nb_valide cibles) sortie;;
